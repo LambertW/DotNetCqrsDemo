@@ -21,8 +21,11 @@ namespace DotNetCqrsDemo.Web.Commands.Requests.Employees
     {
         public CreateEmployeeRequestValidator(IEmployeeRepository employeeRepository, ILocationRepository locationRepository)
         {
-            RuleFor(x => x.EmployeeID).Must(x => !employeeRepository.Exists(x)).WithMessage("An employee with this ID already exists.");
-            RuleFor(x => x.LocationID).Must(x => locationRepository.Exists(x)).WithMessage("No Location with this ID exists.");
+            RuleFor(x => x.EmployeeID)
+                .Must(x => x > 0).WithMessage("Employee ID should large than zero.")
+                .Must(x => !employeeRepository.Exists(x)).WithMessage("An employee with this ID already exists.");
+            RuleFor(x => x.LocationID)
+                .Must(x => locationRepository.Exists(x)).When(x => x.LocationID > 0).WithMessage("No Location with this ID exists.");
             RuleFor(x => x.FirstName).NotNull().NotEmpty().WithMessage("The First Name cannot be blank.");
             RuleFor(x => x.LastName).NotNull().NotEmpty().WithMessage("The Last Name cannot be blank.");
             RuleFor(x => x.JobTitle).NotNull().NotEmpty().WithMessage("The Job Title cannot be blank.");

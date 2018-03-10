@@ -34,11 +34,13 @@ namespace DotNetCqrsDemo.Web.Commands.Controllers
             var command = _mapper.Map<CreateEmployeeCommand>(request);
             await _commandSender.Send(command);
 
-            var locationAggregateID = (await _locationRepository.GetByID(request.LocationID)).AggregateID;
+            if (request.LocationID > 0)
+            {
+                var locationAggregateID = (await _locationRepository.GetByID(request.LocationID)).AggregateID;
 
-            var assignCommand = new AssignEmployeeToLocationCommand(locationAggregateID, request.LocationID, request.EmployeeID);
-            await _commandSender.Send(assignCommand);
-
+                var assignCommand = new AssignEmployeeToLocationCommand(locationAggregateID, request.LocationID, request.EmployeeID);
+                await _commandSender.Send(assignCommand);
+            }
             return Ok();
         }
     }
