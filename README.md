@@ -28,9 +28,11 @@ and so on. So I try to fix the project's problems when I read the articles.
    docker run --name local-redis -d -p 6379:6379 redis:4.0
    ```
 
-3. Run the projects.
+3. Run the projects **Commands**, **Queries** with **Multiple startup projects** setting.
 
-4. Use **Postman**.
+4. Then **start new instance** with **Initializer** project(also you can skip this step).
+
+5. Use **Postman** to try to add data from http://localhost:53958/api/ and receive data from http://localhost:58167/api/ .
 
 
 ## Finanlly

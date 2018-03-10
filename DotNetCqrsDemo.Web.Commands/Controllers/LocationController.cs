@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DotNetCqrsDemo.Web.Commands.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Location")]
+    [Route("api/Locations")]
     public class LocationController : Controller
     {
         private readonly IMapper _mapper;
