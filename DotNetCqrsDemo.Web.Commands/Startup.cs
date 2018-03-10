@@ -55,7 +55,7 @@ namespace DotNetCqrsDemo.Web.Commands
 
             // Redis Setting
             //var redisConfig = Configuration.Get<RedisConfiguration>();
-            var multiplexer = ConnectionMultiplexer.Connect("127.0.0.1");
+            var multiplexer = ConnectionMultiplexer.Connect(Configuration.GetSection("Redis").GetValue<string>("ConnectionString"));
             services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
             // Use Scrutor extensions to scan assemblies.
