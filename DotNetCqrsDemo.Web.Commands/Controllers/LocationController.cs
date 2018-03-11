@@ -38,5 +38,25 @@ namespace DotNetCqrsDemo.Web.Commands.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("AssignEmployee")]
+        public async Task<IActionResult> AssignEmployee(AssignEmployeeToLocationRequest request)
+        {
+            var employee = await _employeeRepository.GetByID(request.EmployeeID);
+            if(employee.LocationID != 0)
+            {
+                var oldLocationAggregateID = (await _locationRepository.GetByID(employee.LocationID)).AggregateID;
+
+                RemoveEmployeeFromLocationCommand command = new RemoveEmployeeFromLocationCommand(oldLocationAggregateID, request.LocationID, employee.EmployeeID);
+                await _commandSender.Send(command);
+            }
+
+            var locationAggregateID = (await _locationRepository.GetByID(request.LocationID)).AggregateID;
+            var assignCommand = new AssignEmployeeToLocationCommand(locationAggregateID, request.LocationID, request.EmployeeID);
+            await _commandSender.Send(assignCommand);
+
+            return Ok();
+        }
     }
 }

@@ -33,9 +33,7 @@ namespace DotNetCqrsDemo.Web.Queries
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
 
-            var redisConfig = Configuration.Get<RedisConfiguration>();
-
-            var multiplexer = ConnectionMultiplexer.Connect("127.0.0.1");
+            var multiplexer = ConnectionMultiplexer.Connect(Configuration.GetSection("Redis").GetValue<string>("ConnectionString"));
             services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 
             // Register the Swagger generator, defining one or more Swagger documents.
@@ -76,13 +74,6 @@ namespace DotNetCqrsDemo.Web.Queries
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Api v1");
                 });
             }
-        }
-
-        public class RedisConfiguration
-        {
-            public string Host { get; set; }
-            public int Port { get; set; }
-            public string Name { get; set; }
         }
     }
 }
