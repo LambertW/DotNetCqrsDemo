@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace DotNetCqrsDemo.Domain.EventHandlers
 {
+    /// <summary>
+    /// Employee Event Handler
+    /// </summary>
     public class EmployeeEventHandler : IEventHandler<EmployeeCreatedEvent>
     {
         private readonly IMapper _mapper;
