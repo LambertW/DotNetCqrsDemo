@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace DotNetCqrsDemo.Domain.EventStore
 {
+    /// <summary>
+    /// In memory event store.
+    /// Data will missing while application restart.
+    /// </summary>
     public class InMemoryEventStore : IEventStore
     {
         private readonly IEventPublisher _publisher;
