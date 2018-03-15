@@ -34,6 +34,14 @@ and so on. So I try to fix the project's problems when I read the articles.
 
 5. Use **Postman** to try to add data from http://localhost:53958/api/ and receive data from http://localhost:58167/api/ .
 
+6. (Developing)Use RavenDB to instead of **InMemoryEventStore**. You can start like this:
+
+   ```
+   docker run -d -e PUBLIC_SERVER_URL=http://172.17.0.2:8080 -e PUBLIC_TCP_SERVER_URL=http://172.17.0.2:38888 -p 8080:8080 -p 38888:38888 ravendb/ravendb:ubuntu-latest
+   ```
+
+7. ​
+
 
 ## Finanlly
 
