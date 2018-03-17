@@ -12,6 +12,7 @@ using CQRSlite.Messages;
 using CQRSlite.Routing;
 using DotNetCqrsDemo.Domain.CommandHandlers;
 using DotNetCqrsDemo.Domain.EventStore;
+using DotNetCqrsDemo.Domain.EventStore.Raven.Extensions;
 using DotNetCqrsDemo.Domain.ReadModel.Repositories.Interfaces;
 using DotNetCqrsDemo.Web.Commands.Filters;
 using DotNetCqrsDemo.Web.Commands.Requests.Employees;
@@ -22,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Raven.Client.Documents.Conventions;
 using StackExchange.Redis;
 
 namespace DotNetCqrsDemo.Web.Commands
@@ -38,20 +40,30 @@ namespace DotNetCqrsDemo.Web.Commands
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
+            // App Settings
+            services.Configure<RavenSettings>(Configuration.GetSection("Raven"));
+
             services.AddMemoryCache();
 
             // Auto Mapper Extensions DI.
             services.AddAutoMapper();
 
             // Add cqrs services
+            services.AddRaven();
+
             services.AddSingleton(new Router());
             services.AddSingleton<ICommandSender>(y => y.GetService<Router>());
             services.AddSingleton<IEventPublisher>(y => y.GetService<Router>());
             services.AddSingleton<IHandlerRegistrar>(y => y.GetService<Router>());
-            services.AddSingleton<IEventStore, InMemoryEventStore>();
+            services.AddSingleton<IEventStore, RavenDBEventStore>();
+            //services.AddSingleton<IEventStore, InMemoryEventStore>();
             services.AddSingleton<ICache, MemoryCache>();
             services.AddScoped<IRepository>(y => new CacheRepository(new Repository(y.GetService<IEventStore>()), y.GetService<IEventStore>(), y.GetService<ICache>()));
             services.AddScoped<ISession, Session>();
+
+            
 
             // Redis Setting
             //var redisConfig = Configuration.Get<RedisConfiguration>();

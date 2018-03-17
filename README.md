@@ -34,13 +34,14 @@ and so on. So I try to fix the project's problems when I read the articles.
 
 5. Use **Postman** to try to add data from http://localhost:53958/api/ and receive data from http://localhost:58167/api/ .
 
-6. (Developing)Use RavenDB to instead of **InMemoryEventStore**. You can start like this:
+6. Use RavenDB to instead of **InMemoryEventStore**. You can start like this:
+
+   1. Use docker to start the RavenDB container.
 
    ```
    docker run -d -e PUBLIC_SERVER_URL=http://172.17.0.2:8080 -e PUBLIC_TCP_SERVER_URL=http://172.17.0.2:38888 -p 8080:8080 -p 38888:38888 ravendb/ravendb:ubuntu-latest
    ```
-
-7. ​
+   2. Setup the RavenDB with https://localhost:8080 , then create the new document **Northwind** (You can change the document name and then change the appsettings.json **Raven section** in **Commands** project.)
 
 
 ## Finanlly
